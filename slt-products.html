@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SLT Products — Skylux Travel Wiki</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --primary:#E74C3C;
+      --primary-dark:#c0392b;
+      --glow:rgba(231,76,60,0.1);
+      --dark:#1a1c23;
+      --darker:#12141a;
+      --surface:#f8f9fc;
+      --card:#ffffff;
+      --text:#2d3436;
+      --muted:#7f8c8d;
+      --border:rgba(0,0,0,0.06);
+      --shadow:0 1px 3px rgba(0,0,0,0.04);
+      --radius:14px;
+    }
+    html{scroll-behavior:smooth}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,sans-serif;
+      background:var(--surface);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased
+    }
+
+    /* ── header ── */
+    .header{
+      background:var(--dark);color:#fff;padding:0 2rem;display:flex;align-items:center;
+      height:64px;position:sticky;top:0;z-index:100
+    }
+    .header .brand{display:flex;align-items:center;gap:12px;font-size:1.2rem;font-weight:700;letter-spacing:-0.3px}
+    .header .brand a{color:#fff;text-decoration:none}
+    .header .wiki-tag{
+      background:var(--primary);padding:3px 10px;border-radius:5px;
+      font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px
+    }
+    .header .divider{width:1px;height:26px;background:rgba(255,255,255,0.12)}
+
+    /* ── nav ── */
+    .nav{
+      background:var(--darker);padding:0 2rem;display:flex;overflow-x:auto;
+      position:sticky;top:64px;z-index:99
+    }
+    .nav a{
+      color:rgba(255,255,255,0.55);text-decoration:none;padding:11px 20px;
+      font-size:.82rem;font-weight:500;transition:all .25s;white-space:nowrap;position:relative
+    }
+    .nav a:hover{color:#fff;background:rgba(255,255,255,0.04)}
+    .nav a.active{color:#fff}
+    .nav a.active::after{
+      content:'';position:absolute;bottom:0;left:20px;right:20px;height:2px;
+      background:var(--primary);border-radius:2px
+    }
+
+    /* ── hero ── */
+    .page-hero{
+      background:linear-gradient(135deg,var(--dark)0%,#0f1116 100%);
+      color:#fff;padding:4rem 2rem;text-align:center;position:relative;overflow:hidden
+    }
+    .page-hero::before{
+      content:'';position:absolute;top:-60%;left:-20%;width:140%;height:160%;
+      background:radial-gradient(ellipse at 30% 50%,rgba(231,76,60,0.07)0%,transparent 60%);
+      animation:heroDrift 14s ease-in-out infinite alternate
+    }
+    @keyframes heroDrift{
+      0%{transform:translate(0,0)rotate(0deg)}
+      100%{transform:translate(-6%,-3%)rotate(2deg)}
+    }
+    .page-hero h1{font-size:clamp(2rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-1px;position:relative}
+    .page-hero h1 span{color:var(--primary)}
+    .page-hero p{font-size:1rem;opacity:.5;max-width:500px;margin:.7rem auto 0;position:relative}
+    .page-hero .count{
+      display:inline-block;margin-top:1.2rem;padding:5px 18px;border-radius:20px;
+      font-size:.78rem;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.15);
+      position:relative;color:rgba(255,255,255,0.7)
+    }
+
+    /* ── scroll animation ── */
+    .reveal{opacity:0;transform:translateY(30px);transition:all .6s cubic-bezier(.22,1,.36,1)}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+    .reveal-d1{transition-delay:.06s}
+    .reveal-d2{transition-delay:.12s}
+    .reveal-d3{transition-delay:.18s}
+    .reveal-d4{transition-delay:.24s}
+    .reveal-d5{transition-delay:.30s}
+
+    /* ── layout ── */
+    .page-wrapper{display:flex;max-width:1200px;margin:0 auto;padding:2rem 1.5rem;gap:2.5rem}
+
+    .side-nav{
+      width:210px;flex-shrink:0;position:sticky;top:140px;align-self:start;padding-top:.5rem
+    }
+    .side-nav .label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:.75rem;padding-left:16px}
+    .side-nav ul{list-style:none;border-left:2px solid var(--border)}
+    .side-nav a{
+      display:block;padding:9px 16px;font-size:.82rem;color:var(--muted);text-decoration:none;
+      border-left:2px solid transparent;margin-left:-2px;transition:all .25s;font-weight:500
+    }
+    .side-nav a:hover{color:var(--text)}
+    .side-nav a.active-link{color:var(--primary);border-left-color:var(--primary)}
+    .side-nav .coming{opacity:.35;pointer-events:none}
+
+    .main-content{flex:1;min-width:0}
+
+    /* ── product section ── */
+    .product-section{margin-bottom:4.5rem;scroll-margin-top:140px}
+
+    .section-head{display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+    .section-head .icon-wrap{
+      width:46px;height:46px;border-radius:12px;display:flex;
+      align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0
+    }
+    .section-head .icon-wrap.tcs{background:rgba(52,152,219,0.08);color:#2980b9}
+    .section-head .icon-wrap.lbp{background:var(--glow);color:var(--primary)}
+    .section-head h2{font-size:1.4rem;font-weight:700;letter-spacing:-.3px}
+    .section-head .ver{margin-left:auto;font-size:.68rem;font-weight:600;padding:4px 14px;border-radius:20px;background:var(--dark);color:#fff;letter-spacing:.3px}
+
+    /* ── overview ── */
+    .overview{
+      background:var(--card);border-radius:var(--radius);padding:1.75rem;
+      box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:2rem;
+      transition:box-shadow .3s
+    }
+    .overview:hover{box-shadow:0 4px 16px rgba(0,0,0,0.05)}
+    .overview p{color:#555;font-size:.92rem}
+    .overview p strong{color:var(--text)}
+
+    /* ── sub-section ── */
+    .sub{margin-bottom:2rem}
+    .sub h3{
+      font-size:1.05rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px
+    }
+    .sub h3 .count-badge{
+      font-size:.65rem;font-weight:600;background:var(--glow);color:var(--primary);
+      padding:2px 10px;border-radius:12px;margin-left:6px
+    }
+
+    /* ── benefits grid ── */
+    .benefits{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem;margin-bottom:2rem}
+    .benefit{
+      background:var(--card);border-radius:var(--radius);padding:1.25rem 1.25rem 1.25rem 1.5rem;
+      box-shadow:var(--shadow);border:1px solid var(--border);border-left:3px solid var(--primary);
+      transition:all .3s cubic-bezier(.22,1,.36,1)
+    }
+    .benefit:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,0.06)}
+    .benefit h4{font-size:.9rem;font-weight:600;margin-bottom:.25rem}
+    .benefit p{font-size:.8rem;color:var(--muted);line-height:1.55}
+    .benefit .tag{
+      display:inline-block;margin-top:.5rem;font-size:.65rem;font-weight:600;
+      text-transform:uppercase;letter-spacing:.4px;padding:2px 10px;border-radius:10px
+    }
+    .tag-all{background:rgba(52,152,219,0.08);color:#2980b9}
+    .tag-premium{background:rgba(230,126,34,0.08);color:#e67e22}
+    .tag-allinc{background:rgba(142,68,173,0.08);color:#8e44ad}
+
+    /* ── plans ── */
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2rem}
+    .plan{
+      background:var(--card);border-radius:var(--radius);padding:2rem 1.5rem 1.75rem;
+      box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;
+      transition:all .35s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden
+    }
+    .plan:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,0.07)}
+    .plan .bar{position:absolute;top:0;left:0;right:0;height:4px}
+    .plan.basic .bar{background:linear-gradient(90deg,#27ae60,#2ecc71)}
+    .plan.premium .bar{background:linear-gradient(90deg,#e67e22,#f39c12)}
+    .plan.allinc .bar{background:linear-gradient(90deg,#8e44ad,#9b59b6)}
+    .plan .picon{
+      width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+      font-size:1.4rem;margin:0 auto 1rem;font-weight:700
+    }
+    .plan.basic .picon{background:rgba(39,174,96,0.08);color:#27ae60}
+    .plan.premium .picon{background:rgba(230,126,34,0.08);color:#e67e22}
+    .plan.allinc .picon{background:rgba(142,68,173,0.08);color:#8e44ad}
+    .plan h3{font-size:1.1rem;font-weight:700}
+    .plan .psub{font-size:.75rem;color:var(--muted);margin-bottom:1.25rem}
+    .plan ul{list-style:none;text-align:left}
+    .plan ul li{
+      padding:7px 0;font-size:.83rem;color:#555;display:flex;align-items:center;gap:9px;
+      border-bottom:1px solid var(--border)
+    }
+    .plan ul li:last-child{border-bottom:none}
+    .plan ul li .ck{color:#27ae60;font-weight:700;font-size:.9rem}
+
+    /* ── version diff ── */
+    .cond-list{
+      background:var(--card);border-radius:var(--radius);padding:1.5rem 1.75rem;
+      box-shadow:var(--shadow);border:1px solid var(--border);margin-bottom:2rem
+    }
+    .cond-list ul{list-style:none}
+    .cond-list li{
+      padding:8px 0;font-size:.85rem;color:#555;display:flex;align-items:flex-start;gap:10px;
+      border-bottom:1px solid var(--border)
+    }
+    .cond-list li:last-child{border-bottom:none}
+    .cond-list li .arr{color:var(--primary);font-weight:700;flex-shrink:0}
+
+    /* ── scenarios ── */
+    .scenarios{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;margin-bottom:2rem}
+    .scenario{
+      background:var(--card);border-radius:var(--radius);padding:1.25rem;
+      box-shadow:var(--shadow);border:1px solid var(--border);border-top:3px solid var(--primary);
+      transition:all .3s
+    }
+    .scenario:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,0.06)}
+    .scenario h4{font-size:.88rem;font-weight:600;margin-bottom:.3rem}
+    .scenario .price{font-size:1.1rem;font-weight:700;color:var(--primary)}
+    .scenario .note{font-size:.78rem;color:var(--muted);margin-top:.4rem}
+
+    /* ── steps ── */
+    .steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:1rem;margin-bottom:2rem}
+    .step{
+      background:var(--card);border-radius:var(--radius);padding:1.5rem 1.25rem;
+      box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;transition:all .3s
+    }
+    .step:hover{transform:translateY(-3px)}
+    .step .num{
+      width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;
+      display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;margin:0 auto .75rem
+    }
+    .step h4{font-size:.88rem;font-weight:600;margin-bottom:.25rem}
+    .step p{font-size:.8rem;color:var(--muted)}
+
+    /* ── key value ── */
+    .kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1rem;margin-bottom:2rem}
+    .kv-item{
+      background:var(--card);border-radius:var(--radius);padding:1.25rem;
+      box-shadow:var(--shadow);border:1px solid var(--border);text-align:center;transition:all .3s
+    }
+    .kv-item:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,0.05)}
+    .kv-item .num{font-size:1.8rem;font-weight:800;color:var(--primary);letter-spacing:-.5px}
+    .kv-item .lbl{font-size:.78rem;color:var(--muted);margin-top:4px}
+
+    /* ── pricing bar ── */
+    .pricing-bar{
+      display:inline-flex;align-items:center;background:linear-gradient(135deg,var(--dark),#0f1116);
+      color:#fff;padding:14px 28px;border-radius:var(--radius);gap:14px;font-size:.88rem;margin-bottom:2rem
+    }
+    .pricing-bar .price{font-size:1.5rem;font-weight:800}
+    .pricing-bar .label{opacity:.5}
+    .pricing-bar .suffix{opacity:.45}
+
+    /* ── footer ── */
+    .footer{background:var(--darker);color:rgba(255,255,255,0.4);text-align:center;padding:2rem;font-size:.8rem}
+    .footer a{color:rgba(255,255,255,0.6);text-decoration:none;cursor:pointer}
+    .footer a:hover{color:#fff}
+    .footer .links{display:flex;justify-content:center;gap:1.5rem;margin-top:6px;font-size:.82rem}
+
+    /* ── modal ── */
+    .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:999;opacity:0;pointer-events:none;transition:opacity .3s}
+    .modal-overlay.open{opacity:1;pointer-events:auto}
+    .modal{background:var(--card);border-radius:var(--radius);padding:2rem;width:90%;max-width:460px;box-shadow:0 20px 60px rgba(0,0,0,0.2);transform:translateY(20px);transition:transform .3s;position:relative}
+    .modal-overlay.open .modal{transform:translateY(0)}
+    .modal .close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--muted);padding:4px;line-height:1}
+    .modal .close:hover{color:var(--text)}
+    .modal h3{font-size:1.1rem;font-weight:700;margin-bottom:.25rem;color:var(--dark)}
+    .modal p{font-size:.82rem;color:var(--muted);margin-bottom:1.25rem}
+    .modal form{display:flex;flex-direction:column;gap:.85rem}
+    .modal input,.modal textarea{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:8px;font-size:.88rem;font-family:inherit;background:var(--surface);transition:border .2s;outline:none;color:var(--text)}
+    .modal input:focus,.modal textarea:focus{border-color:var(--primary)}
+    .modal textarea{min-height:110px;resize:vertical}
+    .modal button[type=submit]{background:var(--primary);color:#fff;border:none;padding:12px;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s}
+    .modal button[type=submit]:hover{background:var(--primary-dark)}
+    .modal .honey{display:none}
+    .modal .success-msg{display:none;text-align:center;padding:1.5rem 0}
+    .modal .success-msg .check{font-size:2.5rem;margin-bottom:.5rem}
+    .modal .success-msg p{font-size:.9rem;margin-bottom:0}
+
+    /* ── back to top ── */
+    .btt{
+      position:fixed;bottom:2rem;right:2rem;width:44px;height:44px;border-radius:50%;
+      background:var(--primary);color:#fff;border:none;font-size:1.2rem;cursor:pointer;
+      box-shadow:0 4px 20px rgba(231,76,60,0.25);transition:all .3s;
+      opacity:0;pointer-events:none;z-index:50
+    }
+    .btt.visible{opacity:1;pointer-events:auto}
+    .btt:hover{transform:scale(1.1)}
+
+    @media(max-width:860px){
+      .side-nav{display:none}
+      .plans{grid-template-columns:1fr}
+      .page-hero{padding:3rem 1.5rem}
+    }
+    @media(min-width:861px)and(max-width:1100px){.plans{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:640px){
+      .header{padding:0 1rem}
+      .nav a{padding:10px 14px;font-size:.78rem}
+      .page-wrapper{padding:1.5rem 1rem}
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="brand">
+      <a href="index.html">Skylux Travel</a>
+      <span class="wiki-tag">Wiki</span>
+      <span class="divider"></span>
+      <span style="font-weight:400;font-size:.82rem;opacity:.45;">SLT Products</span>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <a href="index.html">Home</a>
+    <a href="#">Getting Started</a>
+    <a href="slt-products.html" class="active">SLT Products</a>
+    <a href="#">Policies</a>
+    <a href="#">Booking Guide</a>
+    <a href="#">Customer Service</a>
+    <a href="#">Training</a>
+    <a href="#">FAQs</a>
+    <a href="#">Resources</a>
+  </nav>
+
+  <section class="page-hero">
+    <h1><span>SLT</span> Products</h1>
+    <p>Comprehensive guides to every product Skylux Travel offers — from protection plans to premium memberships.</p>
+    <div class="count">5 products &middot; Updated regularly</div>
+  </section>
+
+  <div class="page-wrapper">
+
+    <nav class="side-nav">
+      <div class="label">On this page</div>
+      <ul>
+        <li><a href="#tcs" class="active-link">Travel Care Service</a></li>
+        <li><a href="#lbp">Lost Baggage Protection</a></li>
+        <li><a href="#ecar">Exchange / Cancel for Any Reason</a></li>
+        <li><a href="#pda">Priority Disruption Assistance</a></li>
+        <li><a href="#dreampass">DreamPass Membership</a></li>
+      </ul>
+    </nav>
+
+    <div class="main-content">
+
+      <!-- ═══════════════ TCS ═══════════════ -->
+      <section class="product-section" id="tcs">
+
+        <div class="section-head reveal visible">
+          <div class="icon-wrap tcs">&#9725;</div>
+          <h2>Travel Care Service</h2>
+          <span class="ver">v7.0 &middot; v4.0</span>
+        </div>
+
+        <div class="overview reveal visible">
+          <p><strong>Travel Care Service (TCS)</strong> is an add-on product customers purchase alongside their airline tickets to protect their journey from unexpected disruptions and make their ticket more flexible. It is offered in <strong>3 plans</strong>: Basic, Premium, and All-Included. TCS v7.0 is designed specifically for upgrade ticket cases, while TCS v4.0 serves standard bookings. Both versions follow the same core benefit structure.</p>
+        </div>
+
+        <div class="sub reveal visible">
+          <h3>Core Benefits</h3>
+          <div class="benefits">
+
+            <div class="benefit">
+              <h4>Price Drop Protection</h4>
+              <p>Monitors the fare for 24 hours after booking. If the price drops, Skylux issues a credit voucher for the difference (max $1,000). Only the highest drop is credited.</p>
+              <span class="tag tag-all">All Plans</span>
+            </div>
+
+            <div class="benefit">
+              <h4>Flight Delay &amp; Cancellation Coverage</h4>
+              <p>Complimentary rebooking if the flight is disrupted on the day of travel. Covers up to $1,000/passenger. Includes missed connection guarantee and service satisfaction guarantee.</p>
+              <span class="tag tag-all">All Plans</span>
+            </div>
+
+            <div class="benefit">
+              <h4>$300 Service Satisfaction Guarantee</h4>
+              <p>If arrival is delayed 6+ hours and the customer is unhappy with rebooking options, a $300 SLT credit voucher is issued. (v4.0: up to $500).</p>
+              <span class="tag tag-all">All Plans</span>
+            </div>
+
+            <div class="benefit">
+              <h4>Agency Service Fees Waived</h4>
+              <p>All Skylux agency service fees are waived when changes are needed. Travelers only pay airline penalties or fare differences.</p>
+              <span class="tag tag-premium">Premium +</span>
+            </div>
+
+            <div class="benefit">
+              <h4>Lost Baggage Protection</h4>
+              <p>$2,000 per bag (up to 2 bags) if luggage is not returned within 96 hours. No proof of contents required.</p>
+              <span class="tag tag-allinc">All-Included</span>
+            </div>
+
+            <div class="benefit">
+              <h4>$150 Unused Benefit Voucher</h4>
+              <p>If no TCS benefits are used during the trip, customers receive a $150 SLT credit voucher. Valid 1 year, transferable.</p>
+              <span class="tag tag-allinc">All-Included</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Plans -->
+        <div class="sub reveal">
+          <h3>Plan Comparison <span class="count-badge">3 tiers</span></h3>
+          <div class="plans">
+
+            <div class="plan basic">
+              <div class="bar"></div>
+              <div class="picon">&#9733;</div>
+              <h3>Basic</h3>
+              <div class="psub">Foundation for stress-free travel</div>
+              <ul>
+                <li><span class="ck">&#10003;</span> Price Drop Protection (24h monitor)</li>
+                <li><span class="ck">&#10003;</span> Flight Delay &amp; Cancellation Coverage</li>
+                <li><span class="ck">&#10003;</span> Missed Connection Guarantee</li>
+                <li><span class="ck">&#10003;</span> 100% Service Satisfaction Guarantee</li>
+                <li><span class="ck">&#10003;</span> Rebooking up to $1,000/passenger</li>
+              </ul>
+            </div>
+
+            <div class="plan premium">
+              <div class="bar"></div>
+              <div class="picon">&#9733;&#9733;</div>
+              <h3>Premium</h3>
+              <div class="psub">Everything in Basic, plus flexibility</div>
+              <ul>
+                <li><span class="ck">&#10003;</span> All Basic benefits</li>
+                <li><span class="ck">&#10003;</span> Change for Any Reason (1 change)</li>
+                <li><span class="ck">&#10003;</span> Agency Service Fees Waived</li>
+                <li><span class="ck">&#10003;</span> Covers airline penalties + fare difference</li>
+              </ul>
+            </div>
+
+            <div class="plan allinc">
+              <div class="bar"></div>
+              <div class="picon">&#9733;&#9733;&#9733;</div>
+              <h3>All-Included</h3>
+              <div class="psub">Maximum protection &amp; flexibility</div>
+              <ul>
+                <li><span class="ck">&#10003;</span> All Basic + Premium benefits</li>
+                <li><span class="ck">&#10003;</span> Cancel for Any Reason</li>
+                <li><span class="ck">&#10003;</span> Lost Baggage Protection ($2,000/bag)</li>
+                <li><span class="ck">&#10003;</span> $150 Voucher if no benefits used</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Version Diff -->
+        <div class="sub reveal">
+          <h3>TCS v7.0 vs v4.0 Key Differences</h3>
+          <div class="cond-list">
+            <ul>
+              <li><span class="arr">&#9656;</span> <strong>v7.0</strong> is designed specifically for <strong>upgrade ticket cases</strong>. It appears automatically when an upgrade is identified.</li>
+              <li><span class="arr">&#9656;</span> In GBO Sale Wizard, check the upgrade box then <strong>refresh the GBO container</strong> to reveal the "Upgrade Fee" column (default $0).</li>
+              <li><span class="arr">&#9656;</span> Upgrade cases marked with the flag will <strong>not</strong> go into auto ticketing — they require manual processing.</li>
+              <li><span class="arr">&#9656;</span> <strong>v4.0</strong> is for standard (non-upgrade) bookings and includes Cancel for Any Reason + $150 voucher in the All-Included plan.</li>
+              <li><span class="arr">&#9656;</span> v4.0 Service Satisfaction Guarantee is up to <strong>$500</strong>; v7.0 offers a flat <strong>$300</strong> credit voucher.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Scenarios -->
+        <div class="sub reveal">
+          <h3>Change for Any Reason — Scenario Examples <span class="count-badge">3 examples</span></h3>
+          <div class="scenarios">
+
+            <div class="scenario">
+              <h4>Scenario 1: Same Price</h4>
+              <p>Original ticket: <span class="price">$3,000</span></p>
+              <p>Airline penalty: $200 &middot; New ticket: $3,000</p>
+              <div class="note">Skylux covers the $200 penalty. Customer pays $0. No fare difference.</div>
+            </div>
+
+            <div class="scenario">
+              <h4>Scenario 2: Price Increase</h4>
+              <p>Original ticket: <span class="price">$3,000</span></p>
+              <p>Airline penalty: $200 &middot; New ticket: $3,100</p>
+              <div class="note">Skylux covers the $200 penalty. Customer pays $100 (fare difference).</div>
+            </div>
+
+            <div class="scenario">
+              <h4>Scenario 3: Non-Exchangeable</h4>
+              <p>Original ticket: <span class="price">$3,000</span></p>
+              <p>New ticket: $3,500 (non-exchangeable original)</p>
+              <div class="note">Skylux covers 100% of original ticket cost ($3,000). Customer pays $500.</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Cancel Terms -->
+        <div class="sub reveal">
+          <h3>Cancel for Any Reason — Terms</h3>
+          <div class="cond-list">
+            <ul>
+              <li><span class="arr">&#9656;</span> Cancel for <strong>any reason</strong> prior to first scheduled departure</li>
+              <li><span class="arr">&#9656;</span> Choose: <strong>100% airline credit</strong> or <strong>75% cash refund</strong> of ticket cost</li>
+              <li><span class="arr">&#9656;</span> Must cancel at least <strong>24 hours before</strong> first departure</li>
+              <li><span class="arr">&#9656;</span> All cancellations must be done <strong>through Skylux</strong>, not the airline</li>
+              <li><span class="arr">&#9656;</span> Cash refund option only applies to <strong>fully unused</strong> tickets</li>
+              <li><span class="arr">&#9656;</span> Airline credit valid for <strong>1 year</strong> from original ticket issue date</li>
+              <li><span class="arr">&#9656;</span> TCS cost is <strong>non-refundable</strong></li>
+            </ul>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ═══════════════ LBP ═══════════════ -->
+      <section class="product-section" id="lbp">
+
+        <div class="section-head reveal">
+          <div class="icon-wrap lbp">&#128140;</div>
+          <h2>Lost Baggage Protection</h2>
+          <span class="ver">Standalone</span>
+        </div>
+
+        <div class="overview reveal">
+          <p><strong>Lost Baggage Protection (LBP)</strong> is a standalone add-on product that ensures customers are compensated if their checked luggage is mishandled. Skylux works with the airline to locate and return the bags, and if not found within <strong>96 hours</strong>, pays a guaranteed <strong>$2,000 per bag</strong> (up to 2 bags) — no proof of contents required.</p>
+        </div>
+
+        <div class="kv reveal">
+          <div class="kv-item"><div class="num">$2,000</div><div class="lbl">Per Bag Compensation</div></div>
+          <div class="kv-item"><div class="num">2</div><div class="lbl">Max Bags per Passenger</div></div>
+          <div class="kv-item"><div class="num">96h</div><div class="lbl">Compensation Trigger</div></div>
+          <div class="kv-item"><div class="num">$39.99</div><div class="lbl">Fixed Price per Passenger</div></div>
+        </div>
+
+        <div class="sub reveal">
+          <h3>How It Works <span class="count-badge">5 steps</span></h3>
+          <div class="steps">
+
+            <div class="step">
+              <div class="num">1</div>
+              <h4>Bag Mishandled</h4>
+              <p>Customer's checked bag is lost, delayed, or damaged by the airline.</p>
+            </div>
+
+            <div class="step">
+              <div class="num">2</div>
+              <h4>File Airline Claim</h4>
+              <p>Customer files a claim with the airline and obtains a tracking / reference number.</p>
+            </div>
+
+            <div class="step">
+              <div class="num">3</div>
+              <h4>Notify Skylux</h4>
+              <p>Customer fills out the Skylux claim form (link in confirmation email) with the tracking number.</p>
+            </div>
+
+            <div class="step">
+              <div class="num">4</div>
+              <h4>96-Hour Search</h4>
+              <p>Skylux works with the airline to locate and return the bag within 96 hours.</p>
+            </div>
+
+            <div class="step">
+              <div class="num">5</div>
+              <h4>Compensation</h4>
+              <p>If not returned within 96h, Skylux pays $2,000 per bag (up to 2 bags).</p>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="sub reveal">
+          <h3>Terms &amp; Conditions</h3>
+          <div class="cond-list">
+            <ul>
+              <li><span class="arr">&#9656;</span> Only applies to <strong>checked-in luggage</strong> mishandled by the airline</li>
+              <li><span class="arr">&#9656;</span> Limit of <strong>2 bags per passenger</strong></li>
+              <li><span class="arr">&#9656;</span> Product is <strong>non-refundable</strong> and <strong>non-transferable</strong></li>
+              <li><span class="arr">&#9656;</span> Applies only to flights listed under the <strong>same confirmation number</strong></li>
+              <li><span class="arr">&#9656;</span> For separate tickets, <strong>must be activated for each</strong> confirmation</li>
+              <li><span class="arr">&#9656;</span> Can be added <strong>any time before the flight</strong> as a standalone product</li>
+              <li><span class="arr">&#9656;</span> Compensation exclusively for passengers <strong>with LBP activated</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pricing-bar reveal">
+          <span class="label">Price:</span>
+          <span class="price">$39.99</span>
+          <span class="suffix">per passenger &mdash; fixed rate</span>
+        </div>
+
+      </section>
+
+      <!-- ═══════════════ ECAR ═══════════════ -->
+      <section class="product-section" id="ecar">
+
+        <div class="section-head reveal">
+          <div class="icon-wrap tcs">&#8644;</div>
+          <h2>Exchange / Cancel for Any Reason</h2>
+          <span class="ver">Standalone</span>
+        </div>
+
+        <div class="overview reveal">
+          <p><strong>Exchange / Cancel for Any Reason</strong> bundles two standalone add-on products that give customers flexibility when plans change — <strong>Change for Any Reason</strong> (voluntary exchange) and <strong>Cancel for Any Reason</strong> (voluntary cancellation). These are designed for customers who booked a flight ticket and did <strong>not</strong> choose a TCS bundle.</p>
+        </div>
+
+        <!-- Change for Any Reason -->
+        <div class="sub reveal">
+          <h3>Change for Any Reason</h3>
+          <div class="benefits">
+
+            <div class="benefit">
+              <h4>One Free Change</h4>
+              <p>Customers can make <strong>one qualified change</strong> to their booking for any reason without facing airline penalties or agency processing fees.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Flexible Segment Changes</h4>
+              <p>Before the first flight: change any or all segments. After the trip starts: change remaining segments only; the unused portion cost is covered.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>What Can Be Changed</h4>
+              <p>Date, time, and one-way/round-trip nature of the booking. The new itinerary must depart within <strong>1 year</strong> from the original purchase.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>What Is Covered</h4>
+              <p>Airline penalties <strong>and</strong> agency processing fees are covered. Customers only pay any fare difference if the new ticket costs more.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Pricing -->
+        <div class="sub reveal">
+          <h3>Pricing</h3>
+          <div class="pricing-bar" style="margin-bottom:0">
+            <span class="label">Price:</span>
+            <span class="price">13%</span>
+            <span class="suffix">of ticket value &middot; min $42.95 (whichever is higher)</span>
+          </div>
+        </div>
+
+        <!-- Rules -->
+        <div class="sub reveal" style="margin-top:2rem">
+          <h3>Rules &amp; Limitations</h3>
+          <div class="cond-list">
+            <ul>
+              <li><span class="arr">&#9656;</span> Cannot be used to cancel and receive a full or partial refund — exchange only</li>
+              <li><span class="arr">&#9656;</span> New itinerary must depart within <strong>1 year</strong> from original ticket purchase date</li>
+              <li><span class="arr">&#9656;</span> Only one qualified change permitted per product purchase</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Cancel for Any Reason -->
+        <div class="sub reveal">
+          <h3>Cancel for Any Reason</h3>
+          <div class="overview">
+            <p>If the customer holds a Cancel for Any Reason plan, they can cancel their flight <strong>for any reason</strong> prior to the first scheduled departure and receive either a refund or credit.</p>
+          </div>
+
+          <div class="benefits" style="margin-top:1rem">
+
+            <div class="benefit">
+              <h4>Two Settlement Options</h4>
+              <p>Choose between <strong>80% cash refund</strong> of the ticket cost, or <strong>100% airline credit</strong> for future travel with the same airline.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>24-Hour Cutoff</h4>
+              <p>Cancellation must be made at least <strong>24 hours before</strong> the first scheduled departure.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Skylux-Only Cancellation</h4>
+              <p>All cancellations must be processed <strong>through Skylux</strong>, not the airline directly. No reason needs to be provided.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Cash vs Credit Rules</h4>
+              <p>Cash refund only applicable for <strong>fully unused</strong> tickets. Airline credit is valid for <strong>1 year</strong> from original issue date; cannot be transferred or combined.</p>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ═══════════════ PDA ═══════════════ -->
+      <section class="product-section" id="pda">
+
+        <div class="section-head reveal">
+          <div class="icon-wrap lbp">&#9888;</div>
+          <h2>Priority Disruption Assistance</h2>
+          <span class="ver">Standalone</span>
+        </div>
+
+        <div class="overview reveal">
+          <p><strong>Priority Disruption Assistance (PDA)</strong> is an add-on service that allows customers to rebook an alternative flight if their flight is delayed by <strong>2+ hours</strong>, canceled, or if they miss a connecting flight due to a prior delay or cancellation. It provides a <strong>complimentary rebooking</strong> on the day of travel when the airline does not offer a reasonable alternative.</p>
+        </div>
+
+        <!-- Key Numbers -->
+        <div class="kv reveal">
+          <div class="kv-item"><div class="num">2h+</div><div class="lbl">Delay Threshold</div></div>
+          <div class="kv-item"><div class="num">7%</div><div class="lbl">of Ticket Price</div></div>
+          <div class="kv-item"><div class="num">$28.95</div><div class="lbl">Minimum Price</div></div>
+          <div class="kv-item"><div class="num">&#10007;</div><div class="lbl">Not Insurance</div></div>
+        </div>
+
+        <!-- Eligibility -->
+        <div class="sub reveal">
+          <h3>Eligibility Conditions</h3>
+          <div class="cond-list">
+            <ul>
+              <li><span class="arr">&#9656;</span> Flight is delayed by <strong>2 hours or more</strong>, canceled, or customer misses a connection due to prior delay/cancellation</li>
+              <li><span class="arr">&#9656;</span> Disruption must occur while <strong>in transit</strong> on the day of the originally scheduled flight</li>
+              <li><span class="arr">&#9656;</span> Cause must be outside passenger's control (e.g. weather, aircraft issues, airline operational problems)</li>
+              <li><span class="arr">&#9656;</span> The airline must <strong>not</strong> offer a reasonable rebooking option</li>
+              <li><span class="arr">&#9656;</span> Service is available only on the <strong>day of travel</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- How It Works -->
+        <div class="sub reveal">
+          <h3>How It Works <span class="count-badge">4 steps</span></h3>
+          <div class="steps">
+
+            <div class="step">
+              <div class="num">1</div>
+              <h4>Flight Disrupted</h4>
+              <p>Flight is delayed 2h+, canceled, or connection is missed due to prior disruption.</p>
+            </div>
+
+            <div class="step">
+              <div class="num">2</div>
+              <h4>Airline Has No Option</h4>
+              <p>Verify the airline has not offered a reasonable rebooking on the same day.</p>
+            </div>
+
+            <div class="step">
+              <div class="num">3</div>
+              <h4>Contact Skylux</h4>
+              <p>Customer contacts Skylux VIP support to request complimentary rebooking.</p>
+            </div>
+
+            <div class="step">
+              <div class="num">4</div>
+              <h4>Rebooking Completed</h4>
+              <p>Skylux rebooks on an alternative flight at no cost to the customer.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Pricing -->
+        <div class="sub reveal">
+          <h3>Pricing</h3>
+          <div class="pricing-bar">
+            <span class="label">Price:</span>
+            <span class="price">7%</span>
+            <span class="suffix">of total ticket price &middot; min $28.95</span>
+          </div>
+        </div>
+
+        <!-- Important Note -->
+        <div class="sub reveal">
+          <h3>Important Notes</h3>
+          <div class="cond-list">
+            <ul>
+              <li><span class="arr">&#9656;</span> This product is <strong>not insurance</strong> — it is a service-based rebooking assistance product</li>
+              <li><span class="arr">&#9656;</span> Does not duplicate compensation already provided by the airline</li>
+              <li><span class="arr">&#9656;</span> Only applies to disruptions on the <strong>day of travel</strong></li>
+            </ul>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ═══════════════ DREAMPASS ═══════════════ -->
+      <section class="product-section" id="dreampass">
+
+        <div class="section-head reveal">
+          <div class="icon-wrap lbp">&#9733;</div>
+          <h2>DreamPass Membership</h2>
+          <span class="ver">Silver &middot; Gold &middot; Platinum</span>
+        </div>
+
+        <div class="overview reveal">
+          <p><strong>DreamPass</strong> is Skylux Travel's premium membership program designed to boost loyalty and turn one-time buyers into repeat customers. With <strong>3 tiers</strong> — Silver, Gold, and Platinum — members earn cashback in <strong>Dream Coins</strong>, enjoy complimentary eSIM connectivity, exclusive deals, flight disruption compensation, and more. <strong>Only 30% of customers make 2+ purchases, yet they account for 52% of all bookings</strong> — DreamPass is built to grow that segment.</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="kv reveal">
+          <div class="kv-item"><div class="num">$51</div><div class="lbl">Avg Savings/Booking</div></div>
+          <div class="kv-item"><div class="num">7.5%</div><div class="lbl">Max Cashback</div></div>
+          <div class="kv-item"><div class="num">18</div><div class="lbl">Coins Valid (months)</div></div>
+          <div class="kv-item"><div class="num">12</div><div class="lbl">Bookings/year eligible</div></div>
+        </div>
+
+        <!-- Plan Comparison -->
+        <div class="sub reveal">
+          <h3>Plan Comparison <span class="count-badge">3 tiers</span></h3>
+          <div class="plans">
+
+            <div class="plan" style="border-top-color:#bdc3c7">
+              <div class="bar" style="background:linear-gradient(90deg,#95a5a6,#bdc3c7)"></div>
+              <div class="picon" style="background:rgba(149,165,166,0.08);color:#7f8c8d">S</div>
+              <h3>Silver</h3>
+              <div class="psub">Essential travel rewards</div>
+              <ul>
+                <li><span class="ck">&#10003;</span> Cashback: <strong>0.75%</strong> flights / <strong>2%</strong> hotels &amp; cars</li>
+                <li><span class="ck">&#10003;</span> Internal products cashback: <strong>3%</strong></li>
+                <li><span class="ck">&#10003;</span> LBP cashback: <strong>5%</strong></li>
+                <li><span class="ck">&#10003;</span> eSIM: <strong>10GB</strong> data (365 days)</li>
+                <li><span class="ck">&#10003;</span> Real-time flight alerts</li>
+                <li><span class="ck">&#10003;</span> Exclusive member deals</li>
+                <li><span class="ck">&#10003;</span> Disrupted flight compensation</li>
+              </ul>
+            </div>
+
+            <div class="plan" style="border-top-color:#f1c40f">
+              <div class="bar" style="background:linear-gradient(90deg,#f39c12,#f1c40f)"></div>
+              <div class="picon" style="background:rgba(241,196,15,0.08);color:#f39c12">G</div>
+              <h3>Gold</h3>
+              <div class="psub">Enhanced benefits + protection</div>
+              <ul>
+                <li><span class="ck">&#10003;</span> Cashback: <strong>1.125%</strong> flights / <strong>3%</strong> hotels &amp; cars</li>
+                <li><span class="ck">&#10003;</span> Internal products cashback: <strong>4.5%</strong></li>
+                <li><span class="ck">&#10003;</span> LBP cashback: <strong>7.5%</strong></li>
+                <li><span class="ck">&#10003;</span> eSIM: <strong>Unlimited</strong> data during trip</li>
+                <li><span class="ck">&#10003;</span> All Silver benefits</li>
+                <li><span class="ck">&#10003;</span> <strong>Ancillary credit</strong></li>
+                <li><span class="ck">&#10003;</span> <strong>International emergency medical protection</strong></li>
+              </ul>
+            </div>
+
+            <div class="plan" style="border-top-color:#2c3e50">
+              <div class="bar" style="background:linear-gradient(90deg,#2c3e50,#34495e)"></div>
+              <div class="picon" style="background:rgba(44,62,80,0.08);color:#2c3e50">P</div>
+              <h3>Platinum</h3>
+              <div class="psub">The ultimate travel experience</div>
+              <ul>
+                <li><span class="ck">&#10003;</span> Cashback: <strong>1.5%</strong> flights / <strong>4%</strong> hotels &amp; cars</li>
+                <li><span class="ck">&#10003;</span> Internal products cashback: <strong>6%</strong></li>
+                <li><span class="ck">&#10003;</span> LBP: <strong>included</strong> (no cashback)</li>
+                <li><span class="ck">&#10003;</span> eSIM: <strong>Unlimited</strong> data during trip</li>
+                <li><span class="ck">&#10003;</span> All Gold benefits</li>
+                <li><span class="ck">&#10003;</span> <strong>Lost Baggage Protection</strong> (built-in)</li>
+                <li><span class="ck">&#10003;</span> <strong>Executive VIP Assistance</strong></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Cashback Deep Dive -->
+        <div class="sub reveal">
+          <h3>Cashback Program — Dream Coins</h3>
+          <div class="benefits">
+
+            <div class="benefit">
+              <h4>How It Works</h4>
+              <p>Earn cashback on every purchase in the form of <strong>Dream Coins</strong> ($1 = 100 coins). Cashback is credited <strong>after the trip is completed</strong>. Valid for <strong>18 months</strong> from the date added. Cannot be redeemed for cash or transferred.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Flight Cashback Rates</h4>
+              <p><strong>Silver:</strong> 0.75% &middot; <strong>Gold:</strong> 1.125% (+50% vs Silver) &middot; <strong>Platinum:</strong> 1.5% (+100% vs Silver)</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Hotels, Cars &amp; Transfers</h4>
+              <p><strong>Silver:</strong> 2% &middot; <strong>Gold:</strong> 3% &middot; <strong>Platinum:</strong> 4%</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Internal Products (FA, FR, TCS)</h4>
+              <p><strong>Silver:</strong> 3% &middot; <strong>Gold:</strong> 4.5% &middot; <strong>Platinum:</strong> 6%</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Lost Baggage Protection Cashback</h4>
+              <p><strong>Silver:</strong> 5% &middot; <strong>Gold:</strong> 7.5% &middot; <strong>Platinum:</strong> N/A (LBP included as built-in benefit)</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Usage Limits</h4>
+              <p>Eligible for up to <strong>12 bookings annually</strong>. Cashback also applies to exchange bookings. Requires <strong>active</strong> DreamPass membership status.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- eSIM -->
+        <div class="sub reveal">
+          <h3>Complimentary eSIM <span class="count-badge">140+ countries</span></h3>
+          <div class="overview">
+            <p>Every DreamPass member gets a <strong>complimentary global eSIM</strong> for seamless connectivity while traveling. No physical SIM needed — instant activation via the DreamPass app. Valid in <strong>140+ countries</strong>. To check supported countries, visit <strong>dreampass.app/SM-countries</strong>.</p>
+          </div>
+
+          <div class="benefits" style="margin-top:1rem">
+
+            <div class="benefit">
+              <h4>Data Allowances by Tier</h4>
+              <p><strong>Silver:</strong> 10GB (365 days valid) &middot; <strong>Gold &amp; Platinum:</strong> Unlimited data during trip only</p>
+            </div>
+
+            <div class="benefit">
+              <h4>How Data Works During Trip</h4>
+              <p>Main package: <strong>50GB</strong> total, <strong>3GB high-speed/day</strong>, then throttled to 256kbps. Resets daily. Max trip duration: <strong>60 days</strong>. Package auto-assigned 1 day before departure.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Trial Package</h4>
+              <p><strong>500MB</strong> trial data (valid 1 year) included upon activation — allows testing installation before travel. After trial is used, the unlimited travel package activates 1 day before the trip.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Top-Up Available</h4>
+              <p>Members can purchase additional data in the app (1GB–20GB options). eSIM is assigned <strong>per booking</strong>, not per customer.</p>
+            </div>
+
+          </div>
+
+          <div class="cond-list reveal" style="margin-top:1rem">
+            <h4 style="font-size:.9rem;font-weight:600;margin-bottom:.5rem">Activation Steps</h4>
+            <ul>
+              <li><span class="arr">&#9656;</span> Activate DreamPass subscription &rarr; receive welcome email</li>
+              <li><span class="arr">&#9656;</span> Download <strong>DreamPass app</strong> and sign up / log in</li>
+              <li><span class="arr">&#9656;</span> Access eSIM via: <strong>main screen</strong> / <strong>Membership section</strong> / <strong>My eSIM section</strong></li>
+              <li><span class="arr">&#9656;</span> Press "Activate eSIM" to generate QR code</li>
+              <li><span class="arr">&#9656;</span> Install eSIM (Android/iOS instructions in Factopedia). iOS 17.4+ can tap &amp; hold QR for quick add</li>
+              <li><span class="arr">&#9656;</span> Ensure eSIM is <strong>turned on</strong>, enable <strong>data roaming</strong>, set as <strong>primary data</strong>, configure APN to <strong>global data</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Member Deals -->
+        <div class="sub reveal">
+          <h3>Member-Only Deals</h3>
+          <div class="benefits">
+
+            <div class="benefit">
+              <h4>Entertainment Discounts</h4>
+              <p>Exclusive savings on theme parks, concerts, and attractions — including <strong>Walt Disney World</strong>, <strong>Universal Orlando Resort</strong>, <strong>Cirque du Soleil</strong>, <strong>SeaWorld</strong>, and many more worldwide.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Express VPN — 35% Off</h4>
+              <p>Members get <strong>35% off</strong> Express VPN with code <strong>DreamPass</strong> at checkout (1-year and 2-year plans). Browse safely with servers in <strong>160+ locations</strong>.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>How to Access</h4>
+              <p>After activation, the welcome email contains a link to the <strong>Member Deals portal</strong> under "Unlock Special Offers". The same link appears on the <strong>OAF</strong> under the "Members Only Deals" banner.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Disrupted Flight Compensation -->
+        <div class="sub reveal">
+          <h3>Disrupted Flight Compensation</h3>
+          <div class="overview">
+            <p>DreamPass members can receive up to <strong>&euro;600</strong> if their flight is delayed or canceled. The customer is <strong>automatically notified by email</strong> when their flight is eligible — no need to track it manually.</p>
+          </div>
+
+          <div class="steps" style="margin-top:1rem">
+
+            <div class="step">
+              <div class="num">1</div>
+              <h4>Automatic Email</h4>
+              <p>Customer receives email notification when their flight is eligible for compensation.</p>
+            </div>
+
+            <div class="step">
+              <div class="num">2</div>
+              <h4>Submit Claim</h4>
+              <p>Fill out a short form with name, email, and payment details.</p>
+            </div>
+
+            <div class="step">
+              <div class="num">3</div>
+              <h4>Processed by AirHelp</h4>
+              <p>Our trusted partner handles the claim quickly and efficiently.</p>
+            </div>
+
+            <div class="step">
+              <div class="num">4</div>
+              <h4>Compensation Paid</h4>
+              <p>Amount credited directly back to the customer's credit card.</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Additional Benefits -->
+        <div class="sub reveal">
+          <h3>Additional Benefits</h3>
+          <div class="benefits">
+
+            <div class="benefit">
+              <h4>Real-Time Flight Alerts</h4>
+              <p>Free push notifications via the DreamPass app for gate changes, baggage updates, delays, cancellations, and live flight tracking.</p>
+            </div>
+
+            <div class="benefit">
+              <h4>Ancillary Credit</h4>
+              <p>Available for <strong>Gold</strong> and <strong>Platinum</strong> members — credit towards ancillaries like baggage fees and seat selection.</p>
+              <span class="tag tag-premium">Gold +</span>
+            </div>
+
+            <div class="benefit">
+              <h4>International Emergency Medical Protection</h4>
+              <p>Coverage for medical emergencies while traveling abroad. Included with <strong>Gold</strong> and <strong>Platinum</strong> plans.</p>
+              <span class="tag tag-premium">Gold +</span>
+            </div>
+
+            <div class="benefit">
+              <h4>Executive VIP Assistance</h4>
+              <p>Premium concierge-level support for <strong>Platinum</strong> members — dedicated assistance for a seamless travel experience.</p>
+              <span class="tag tag-allinc">Platinum</span>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Skylux Travel Wiki &mdash; For internal agent use only.</p>
+    <div class="links">
+      <a href="https://skyluxtravel.com" target="_blank">skyluxtravel.com</a>
+      <a href="index.html">Wiki Home</a>
+      <a href="#" id="feedbackBtn">Wiki Feedback</a>
+    </div>
+  </footer>
+
+  <!-- Feedback Modal -->
+  <div class="modal-overlay" id="feedbackModal">
+    <div class="modal">
+      <button class="close" id="closeModal">&times;</button>
+      <h3>Submit Feedback</h3>
+      <p>Help us improve the wiki. Your feedback is valuable.</p>
+      <form action="https://api.web3forms.com/submit" method="POST" id="feedbackForm">
+        <input type="hidden" name="access_key" value="cfc4511f-0b2a-441f-ab45-02ca6ccdf4f3">
+        <input type="hidden" name="subject" value="Wiki Feedback">
+        <input type="checkbox" name="botcheck" class="honey">
+        <input type="text" name="name" placeholder="Your name" required>
+        <input type="email" name="email" placeholder="Your email" required>
+        <textarea name="message" placeholder="Tell us what you think..." required></textarea>
+        <button type="submit">Send Feedback</button>
+      </form>
+      <div class="success-msg" id="successMsg">
+        <div class="check">&#10003;</div>
+        <p>Thanks for your feedback!</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
+
+  <script>
+    // ── Feedback Modal ──
+    const fbBtn=document.getElementById('feedbackBtn');
+    const fbModal=document.getElementById('feedbackModal');
+    const closeBtn=document.getElementById('closeModal');
+    const fbForm=document.getElementById('feedbackForm');
+    const successMsg=document.getElementById('successMsg');
+
+    fbBtn.addEventListener('click',e=>{e.preventDefault();fbModal.classList.add('open')});
+    closeBtn.addEventListener('click',()=>{fbModal.classList.remove('open')});
+    fbModal.addEventListener('click',e=>{if(e.target===fbModal)fbModal.classList.remove('open')});
+
+    fbForm.addEventListener('submit',async e=>{
+      e.preventDefault();
+      const fd=new FormData(fbForm);
+      try{
+        const r=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd,headers:{'Accept':'application/json'}});
+        const d=await r.json();
+        if(d.success){fbForm.style.display='none';successMsg.style.display='block'}
+        else alert('Something went wrong. Please try again.');
+      }catch{alert('Network error. Please try again.');}
+    });
+
+    // Back to top
+    window.addEventListener('scroll',()=>{document.getElementById('btt').classList.toggle('visible',window.scrollY>400)});
+
+    // Scroll reveal
+    const ro=new IntersectionObserver(e=>{e.forEach(i=>{if(i.isIntersecting)i.target.classList.add('visible')})},{threshold:.08});
+    document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+    // Side nav active link
+    const sections=document.querySelectorAll('.product-section');
+    const links=document.querySelectorAll('.side-nav a:not(.coming)');
+    const so=new IntersectionObserver(e=>{e.forEach(i=>{if(i.isIntersecting){links.forEach(l=>l.classList.remove('active-link'));const m=document.querySelector(`.side-nav a[href="#${i.target.id}"]`);if(m)m.classList.add('active-link')}})},{rootMargin:'-100px 0px -60% 0px'});
+    sections.forEach(s=>so.observe(s));
+  </script>
+
+</body>
+</html>

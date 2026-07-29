@@ -1,0 +1,47 @@
+Hi and welcome to the travel care service version 7 lesson. The new Travelcare Service 7 is a unique solution
+designed to enhance the customer experience with a full range of benefits that bring convenience,
+protection, and peace of mind to every trip. Let's start with a quick reminder of what travel care services and
+the plans it includes. It's an add-on product that customers can purchase alongside their airline tickets to
+protect their journey from unexpected disruptions and make their ticket more flexible. Just like before, it's
+offered in 3 plans basic, premium, and all included. In TCS version 7, you'll notice that the core set of
+benefits remains quite similar to what you're already used to. Let's walk through the benefits included in TCS
+version 7. 1st, we have price drop protection and flight delay rebooking. This benefit is quite comprehensive.
+It includes price drop protection, coverage for flight delays and cancellations, and support in case of missed
+connections. Next, you'll see that all agency service fees are waived, which adds extra value for the traveler.
+Following that, there's a $150 discount offered for the customer's next trip, an easy way to encourage repeat
+bookings. And finally, TCS 7 includes the lost baggage protection, which provides extra peace of mind in case
+luggage goes missing during travel. Now that you have an overall understanding of the benefits of TCS, let's
+go over each tier. We will start with the basic tier that lays the foundation for stress-free travel. It gives
+customers access to price drop protection, which monitors the fare for 24 hours after booking. Plus, travelers
+get flight delay and cancellation coverage. This also includes two important sub-benefits. First, the 100%
+service satisfaction guarantee. If a traveler uses the rebooking service and their arrival is delayed by 6 hours
+or more, and they're not happy with the options offered, they'll get a $300 SLT credit voucher. Second, the
+missed connection guarantee. To use this service, the customer must meet a few key conditions. First, the
+delay or cancellation must happen while the customer is in transit, meaning on the same day as their
+originally scheduled flight, either heading to or from their destination. The disruption also needs to be caused
+by something outside of their control like weather or aircraft issues. Most importantly, the airline must not
+offer a reasonable rebooking option on the same day. A rebooking is considered reasonable if the new flight
+departs within one hour of the original flight time or is the next available flight. If the disruption happens late
+in the day, that could mean the next day. SLT will decide if the option offered is reasonable. Lastly, keep in
+mind that the service covers rebooking costs up to $1000 per passenger, any amount above that will need to
+be paid by the customer. Next is the premium tier, which includes everything from the basic plan with one
+key addition. All Skylux travel agency service fees are waived if changes are needed. Travelers only pay the
+airline penalties or fare differences. In TCS version 7, the all-included tier continues to offer all the benefits
+found in both the basic and premium tiers and also includes lost baggage protection, providing travelers with
+greater peace of mind when checking bags. Here's how it works. If a bag is mishandled, SLT will track it and
+assist in expediting its return. If the baggage is not delivered within 96 hours, the customer is entitled to
+$2000 in compensation per bag for up to 2 bags. No proof of the contents is required to receive this payout, making it a quick and hassle-free process. Additionally, travelers are eligible for a $150 SLT credit voucher if
+they don't use any of the TCS benefits during their trip. To claim it, they simply need to email us after their
+journey. The voucher is valid for one year. Can be transferred to another person is redeemable for any future
+booking limited to one voucher per reservation. Let's go over when and how TCS version 7 becomes
+available in the system. This version is designed specifically for upgrade ticket cases and will appear
+automatically, but only when an upgrade is identified and selected. In GBO on the sale wizard confirmation
+page, users will see an option to mark the case as an upgrade. Once this box is checked, the system knows
+to apply TCS version 7. After the upgrade box is checked in the sale wizard confirmation page, the user must
+refresh the GBO container. This refresh triggers the appearance of a new column labeled upgrade fee in the
+GBO financial table. By default, the upgrade fee will be set to $0. While it is possible to adjust this amount
+manually, doing so is not required at the moment of sending the OAF. However, the fee must be entered
+before the upgrade case is processed. It's also important to note that any case marked with the upgrade flag
+will not be placed into the auto ticketing queue. It will require manual processing from that point forward.
+Before wrapping up this lesson, please check the Factopedia section where you'll find the Q&A form and also
+the FAQ file. Thank you for watching this video.
