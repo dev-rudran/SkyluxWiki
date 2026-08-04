@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SLT Products — Skylux Travel Wiki</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
-      --primary:#E74C3C;
-      --primary-dark:#c0392b;
-      --glow:rgba(231,76,60,0.1);
-      --dark:#1a1c23;
-      --darker:#12141a;
+      --dark:#202A36;
+      --darker:#1a2229;
       --surface:#f8f9fc;
       --card:#ffffff;
       --text:#2d3436;
@@ -19,79 +19,105 @@
       --border:rgba(0,0,0,0.06);
       --shadow:0 1px 3px rgba(0,0,0,0.04);
       --radius:14px;
+      --primary:#E74C3C;
+      --glow:rgba(231,76,60,0.1);
     }
     html{scroll-behavior:smooth}
     body{
-      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,sans-serif;
+      font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
       background:var(--surface);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased
     }
 
-    /* ── header ── */
-    .header{
-      background:var(--dark);color:#fff;padding:0 2rem;display:flex;align-items:center;
-      height:64px;position:sticky;top:0;z-index:100
+    /* ── navbar ── */
+    .navbar{
+      position:fixed;top:0;left:0;right:0;z-index:200;
+      max-width:80rem;margin:0 auto;padding:1.5rem 2rem;
+      display:flex;align-items:center;justify-content:space-between;
+      transition:background .3s,box-shadow .3s
     }
-    .header .brand{display:flex;align-items:center;gap:12px;font-size:1.2rem;font-weight:700;letter-spacing:-0.3px}
-    .header .brand a{color:#fff;text-decoration:none}
-    .header .wiki-tag{
-      background:var(--primary);padding:3px 10px;border-radius:5px;
-      font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px
+    .navbar.scrolled{
+      background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);
+      box-shadow:0 1px 3px rgba(0,0,0,0.06);padding:1rem 2rem
     }
-    .header .divider{width:1px;height:26px;background:rgba(255,255,255,0.12)}
+    .navbar .brand{
+      font-size:1.25rem;font-weight:600;color:var(--dark);letter-spacing:-0.3px;
+      text-decoration:none;display:flex;align-items:center;gap:10px
+    }
+    .navbar .brand .wiki-tag{
+      background:var(--primary);padding:2px 8px;border-radius:5px;
+      font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#fff
+    }
+    .navbar .desktop-nav{display:flex;align-items:center;gap:2rem}
+    .navbar .desktop-nav a{
+      color:#6b7280;text-decoration:none;font-size:.875rem;font-weight:500;
+      transition:color .2s
+    }
+    .navbar .desktop-nav a:hover{color:var(--dark)}
+    .navbar .desktop-nav a.active{color:var(--dark);font-weight:600}
+    .navbar .hamburger{
+      display:none;background:none;border:none;cursor:pointer;
+      color:var(--dark);padding:4px
+    }
+    .navbar .hamburger svg{width:24px;height:24px}
 
-    /* ── nav ── */
-    .nav{
-      background:var(--darker);padding:0 2rem;display:flex;overflow-x:auto;
-      position:sticky;top:64px;z-index:99
+    /* mobile nav */
+    .mobile-nav{
+      display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:199;
+      background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);
+      flex-direction:column;align-items:center;justify-content:center;gap:2rem
     }
-    .nav a{
-      color:rgba(255,255,255,0.55);text-decoration:none;padding:11px 20px;
-      font-size:.82rem;font-weight:500;transition:all .25s;white-space:nowrap;position:relative
+    .mobile-nav.open{display:flex}
+    .mobile-nav a{
+      color:var(--dark);text-decoration:none;font-size:1.1rem;font-weight:500;
+      transition:color .2s
     }
-    .nav a:hover{color:#fff;background:rgba(255,255,255,0.04)}
-    .nav a.active{color:#fff}
-    .nav a.active::after{
-      content:'';position:absolute;bottom:0;left:20px;right:20px;height:2px;
-      background:var(--primary);border-radius:2px
+    .mobile-nav a:hover{color:#6b7280}
+    .mobile-nav .close-btn{
+      position:absolute;top:1.5rem;right:2rem;background:none;border:none;
+      cursor:pointer;color:var(--dark);padding:4px
+    }
+    .mobile-nav .close-btn svg{width:24px;height:24px}
+
+    @media(max-width:768px){
+      .navbar .desktop-nav{display:none}
+      .navbar .hamburger{display:block}
     }
 
-    /* ── hero ── */
+    /* ── page hero ── */
     .page-hero{
-      background:linear-gradient(135deg,var(--dark)0%,#0f1116 100%);
-      color:#fff;padding:4rem 2rem;text-align:center;position:relative;overflow:hidden
+      position:relative;min-height:40vh;overflow:hidden;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:8rem 2rem 4rem
     }
-    .page-hero::before{
-      content:'';position:absolute;top:-60%;left:-20%;width:140%;height:160%;
-      background:radial-gradient(ellipse at 30% 50%,rgba(231,76,60,0.07)0%,transparent 60%);
-      animation:heroDrift 14s ease-in-out infinite alternate
+    .page-hero video{
+      position:absolute;top:0;left:0;width:100%;height:100%;
+      object-fit:cover;z-index:0
     }
-    @keyframes heroDrift{
-      0%{transform:translate(0,0)rotate(0deg)}
-      100%{transform:translate(-6%,-3%)rotate(2deg)}
+    .page-hero .overlay{
+      position:absolute;inset:0;
+      background:linear-gradient(180deg,rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.7) 60%,rgba(248,249,252,1) 100%);
+      z-index:1
     }
-    .page-hero h1{font-size:clamp(2rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-1px;position:relative}
-    .page-hero h1 span{color:var(--primary)}
-    .page-hero p{font-size:1rem;opacity:.5;max-width:500px;margin:.7rem auto 0;position:relative}
+    .page-hero h1{
+      font-size:clamp(2rem,5vw,3.2rem);font-weight:400;letter-spacing:-.04em;
+      position:relative;z-index:1
+    }
+    .page-hero h1 span{color:var(--dark);font-weight:700}
+    .page-hero p{
+      font-size:1rem;color:#6b7280;max-width:500px;margin:.7rem auto 0;
+      position:relative;z-index:1
+    }
     .page-hero .count{
       display:inline-block;margin-top:1.2rem;padding:5px 18px;border-radius:20px;
-      font-size:.78rem;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.15);
-      position:relative;color:rgba(255,255,255,0.7)
+      font-size:.78rem;background:rgba(231,76,60,0.08);border:1px solid rgba(231,76,60,0.12);
+      position:relative;z-index:1;color:var(--muted)
     }
-
-    /* ── scroll animation ── */
-    .reveal{opacity:0;transform:translateY(30px);transition:all .6s cubic-bezier(.22,1,.36,1)}
-    .reveal.visible{opacity:1;transform:translateY(0)}
-    .reveal-d1{transition-delay:.06s}
-    .reveal-d2{transition-delay:.12s}
-    .reveal-d3{transition-delay:.18s}
-    .reveal-d4{transition-delay:.24s}
-    .reveal-d5{transition-delay:.30s}
 
     /* ── layout ── */
     .page-wrapper{display:flex;max-width:1200px;margin:0 auto;padding:2rem 1.5rem;gap:2.5rem}
 
     .side-nav{
-      width:210px;flex-shrink:0;position:sticky;top:140px;align-self:start;padding-top:.5rem
+      width:210px;flex-shrink:0;position:sticky;top:100px;align-self:start;padding-top:.5rem
     }
     .side-nav .label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:.75rem;padding-left:16px}
     .side-nav ul{list-style:none;border-left:2px solid var(--border)}
@@ -106,7 +132,7 @@
     .main-content{flex:1;min-width:0}
 
     /* ── product section ── */
-    .product-section{margin-bottom:4.5rem;scroll-margin-top:140px}
+    .product-section{margin-bottom:4.5rem;scroll-margin-top:100px}
 
     .section-head{display:flex;align-items:center;gap:14px;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
     .section-head .icon-wrap{
@@ -115,7 +141,7 @@
     }
     .section-head .icon-wrap.tcs{background:rgba(52,152,219,0.08);color:#2980b9}
     .section-head .icon-wrap.lbp{background:var(--glow);color:var(--primary)}
-    .section-head h2{font-size:1.4rem;font-weight:700;letter-spacing:-.3px}
+    .section-head h2{font-size:1.4rem;font-weight:700;letter-spacing:-.3px;color:var(--dark)}
     .section-head .ver{margin-left:auto;font-size:.68rem;font-weight:600;padding:4px 14px;border-radius:20px;background:var(--dark);color:#fff;letter-spacing:.3px}
 
     /* ── overview ── */
@@ -131,7 +157,7 @@
     /* ── sub-section ── */
     .sub{margin-bottom:2rem}
     .sub h3{
-      font-size:1.05rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px
+      font-size:1.05rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:8px;color:var(--dark)
     }
     .sub h3 .count-badge{
       font-size:.65rem;font-weight:600;background:var(--glow);color:var(--primary);
@@ -146,7 +172,7 @@
       transition:all .3s cubic-bezier(.22,1,.36,1)
     }
     .benefit:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,0.06)}
-    .benefit h4{font-size:.9rem;font-weight:600;margin-bottom:.25rem}
+    .benefit h4{font-size:.9rem;font-weight:600;margin-bottom:.25rem;color:var(--dark)}
     .benefit p{font-size:.8rem;color:var(--muted);line-height:1.55}
     .benefit .tag{
       display:inline-block;margin-top:.5rem;font-size:.65rem;font-weight:600;
@@ -175,7 +201,7 @@
     .plan.basic .picon{background:rgba(39,174,96,0.08);color:#27ae60}
     .plan.premium .picon{background:rgba(230,126,34,0.08);color:#e67e22}
     .plan.allinc .picon{background:rgba(142,68,173,0.08);color:#8e44ad}
-    .plan h3{font-size:1.1rem;font-weight:700}
+    .plan h3{font-size:1.1rem;font-weight:700;color:var(--dark)}
     .plan .psub{font-size:.75rem;color:var(--muted);margin-bottom:1.25rem}
     .plan ul{list-style:none;text-align:left}
     .plan ul li{
@@ -206,7 +232,7 @@
       transition:all .3s
     }
     .scenario:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,0.06)}
-    .scenario h4{font-size:.88rem;font-weight:600;margin-bottom:.3rem}
+    .scenario h4{font-size:.88rem;font-weight:600;margin-bottom:.3rem;color:var(--dark)}
     .scenario .price{font-size:1.1rem;font-weight:700;color:var(--primary)}
     .scenario .note{font-size:.78rem;color:var(--muted);margin-top:.4rem}
 
@@ -221,7 +247,7 @@
       width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;
       display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;margin:0 auto .75rem
     }
-    .step h4{font-size:.88rem;font-weight:600;margin-bottom:.25rem}
+    .step h4{font-size:.88rem;font-weight:600;margin-bottom:.25rem;color:var(--dark)}
     .step p{font-size:.8rem;color:var(--muted)}
 
     /* ── key value ── */
@@ -236,7 +262,7 @@
 
     /* ── pricing bar ── */
     .pricing-bar{
-      display:inline-flex;align-items:center;background:linear-gradient(135deg,var(--dark),#0f1116);
+      display:inline-flex;align-items:center;background:var(--dark);
       color:#fff;padding:14px 28px;border-radius:var(--radius);gap:14px;font-size:.88rem;margin-bottom:2rem
     }
     .pricing-bar .price{font-size:1.5rem;font-weight:800}
@@ -244,7 +270,7 @@
     .pricing-bar .suffix{opacity:.45}
 
     /* ── footer ── */
-    .footer{background:var(--darker);color:rgba(255,255,255,0.4);text-align:center;padding:2rem;font-size:.8rem}
+    .footer{background:var(--dark);color:rgba(255,255,255,0.4);text-align:center;padding:2rem;font-size:.8rem}
     .footer a{color:rgba(255,255,255,0.6);text-decoration:none;cursor:pointer}
     .footer a:hover{color:#fff}
     .footer .links{display:flex;justify-content:center;gap:1.5rem;margin-top:6px;font-size:.82rem}
@@ -263,7 +289,7 @@
     .modal input:focus,.modal textarea:focus{border-color:var(--primary)}
     .modal textarea{min-height:110px;resize:vertical}
     .modal button[type=submit]{background:var(--primary);color:#fff;border:none;padding:12px;border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .2s}
-    .modal button[type=submit]:hover{background:var(--primary-dark)}
+    .modal button[type=submit]:hover{background:#c0392b}
     .modal .honey{display:none}
     .modal .success-msg{display:none;text-align:center;padding:1.5rem 0}
     .modal .success-msg .check{font-size:2.5rem;margin-bottom:.5rem}
@@ -272,8 +298,8 @@
     /* ── back to top ── */
     .btt{
       position:fixed;bottom:2rem;right:2rem;width:44px;height:44px;border-radius:50%;
-      background:var(--primary);color:#fff;border:none;font-size:1.2rem;cursor:pointer;
-      box-shadow:0 4px 20px rgba(231,76,60,0.25);transition:all .3s;
+      background:var(--dark);color:#fff;border:none;font-size:1.2rem;cursor:pointer;
+      box-shadow:0 4px 20px rgba(32,42,54,0.25);transition:all .3s;
       opacity:0;pointer-events:none;z-index:50
     }
     .btt.visible{opacity:1;pointer-events:auto}
@@ -282,40 +308,43 @@
     @media(max-width:860px){
       .side-nav{display:none}
       .plans{grid-template-columns:1fr}
-      .page-hero{padding:3rem 1.5rem}
     }
     @media(min-width:861px)and(max-width:1100px){.plans{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:640px){
-      .header{padding:0 1rem}
-      .nav a{padding:10px 14px;font-size:.78rem}
+      .page-hero{padding:7rem 1.5rem 3rem}
       .page-wrapper{padding:1.5rem 1rem}
     }
   </style>
 </head>
 <body>
 
-  <header class="header">
-    <div class="brand">
-      <a href="index.html">Skylux Travel</a>
-      <span class="wiki-tag">Wiki</span>
-      <span class="divider"></span>
-      <span style="font-weight:400;font-size:.82rem;opacity:.45;">SLT Products</span>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="brand">Skylux Travel <span class="wiki-tag">Wiki</span></a>
+    <div class="desktop-nav">
+      <a href="index.html">Home</a>
+      <a href="slt-products.html" class="active">SLT Products</a>
     </div>
-  </header>
-
-  <nav class="nav">
-    <a href="index.html">Home</a>
-    <a href="#">Getting Started</a>
-    <a href="slt-products.html" class="active">SLT Products</a>
-    <a href="#">Policies</a>
-    <a href="#">Booking Guide</a>
-    <a href="#">Customer Service</a>
-    <a href="#">Training</a>
-    <a href="#">FAQs</a>
-    <a href="#">Resources</a>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
   </nav>
 
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <button class="close-btn" id="closeNav" aria-label="Close menu">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <a href="index.html">Home</a>
+    <a href="slt-products.html">SLT Products</a>
+  </div>
+
+  <!-- Page Hero -->
   <section class="page-hero">
+    <video autoplay muted loop playsinline>
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_091828_e240eb17-6edc-4129-ad9d-98678e3fd238.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
     <h1><span>SLT</span> Products</h1>
     <p>Comprehensive guides to every product Skylux Travel offers — from protection plans to premium memberships.</p>
     <div class="count">5 products &middot; Updated regularly</div>
@@ -339,17 +368,17 @@
       <!-- ═══════════════ TCS ═══════════════ -->
       <section class="product-section" id="tcs">
 
-        <div class="section-head reveal visible">
+        <div class="section-head">
           <div class="icon-wrap tcs">&#9725;</div>
           <h2>Travel Care Service</h2>
           <span class="ver">v7.0 &middot; v4.0</span>
         </div>
 
-        <div class="overview reveal visible">
+        <div class="overview">
           <p><strong>Travel Care Service (TCS)</strong> is an add-on product customers purchase alongside their airline tickets to protect their journey from unexpected disruptions and make their ticket more flexible. It is offered in <strong>3 plans</strong>: Basic, Premium, and All-Included. TCS v7.0 is designed specifically for upgrade ticket cases, while TCS v4.0 serves standard bookings. Both versions follow the same core benefit structure.</p>
         </div>
 
-        <div class="sub reveal visible">
+        <div class="sub">
           <h3>Core Benefits</h3>
           <div class="benefits">
 
@@ -393,7 +422,7 @@
         </div>
 
         <!-- Plans -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Plan Comparison <span class="count-badge">3 tiers</span></h3>
           <div class="plans">
 
@@ -441,7 +470,7 @@
         </div>
 
         <!-- Version Diff -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>TCS v7.0 vs v4.0 Key Differences</h3>
           <div class="cond-list">
             <ul>
@@ -455,7 +484,7 @@
         </div>
 
         <!-- Scenarios -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Change for Any Reason — Scenario Examples <span class="count-badge">3 examples</span></h3>
           <div class="scenarios">
 
@@ -484,7 +513,7 @@
         </div>
 
         <!-- Cancel Terms -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Cancel for Any Reason — Terms</h3>
           <div class="cond-list">
             <ul>
@@ -504,24 +533,24 @@
       <!-- ═══════════════ LBP ═══════════════ -->
       <section class="product-section" id="lbp">
 
-        <div class="section-head reveal">
+        <div class="section-head">
           <div class="icon-wrap lbp">&#128140;</div>
           <h2>Lost Baggage Protection</h2>
           <span class="ver">Standalone</span>
         </div>
 
-        <div class="overview reveal">
+        <div class="overview">
           <p><strong>Lost Baggage Protection (LBP)</strong> is a standalone add-on product that ensures customers are compensated if their checked luggage is mishandled. Skylux works with the airline to locate and return the bags, and if not found within <strong>96 hours</strong>, pays a guaranteed <strong>$2,000 per bag</strong> (up to 2 bags) — no proof of contents required.</p>
         </div>
 
-        <div class="kv reveal">
+        <div class="kv">
           <div class="kv-item"><div class="num">$2,000</div><div class="lbl">Per Bag Compensation</div></div>
           <div class="kv-item"><div class="num">2</div><div class="lbl">Max Bags per Passenger</div></div>
           <div class="kv-item"><div class="num">96h</div><div class="lbl">Compensation Trigger</div></div>
           <div class="kv-item"><div class="num">$39.99</div><div class="lbl">Fixed Price per Passenger</div></div>
         </div>
 
-        <div class="sub reveal">
+        <div class="sub">
           <h3>How It Works <span class="count-badge">5 steps</span></h3>
           <div class="steps">
 
@@ -558,7 +587,7 @@
           </div>
         </div>
 
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Terms &amp; Conditions</h3>
           <div class="cond-list">
             <ul>
@@ -573,7 +602,7 @@
           </div>
         </div>
 
-        <div class="pricing-bar reveal">
+        <div class="pricing-bar">
           <span class="label">Price:</span>
           <span class="price">$39.99</span>
           <span class="suffix">per passenger &mdash; fixed rate</span>
@@ -584,18 +613,18 @@
       <!-- ═══════════════ ECAR ═══════════════ -->
       <section class="product-section" id="ecar">
 
-        <div class="section-head reveal">
+        <div class="section-head">
           <div class="icon-wrap tcs">&#8644;</div>
           <h2>Exchange / Cancel for Any Reason</h2>
           <span class="ver">Standalone</span>
         </div>
 
-        <div class="overview reveal">
+        <div class="overview">
           <p><strong>Exchange / Cancel for Any Reason</strong> bundles two standalone add-on products that give customers flexibility when plans change — <strong>Change for Any Reason</strong> (voluntary exchange) and <strong>Cancel for Any Reason</strong> (voluntary cancellation). These are designed for customers who booked a flight ticket and did <strong>not</strong> choose a TCS bundle.</p>
         </div>
 
         <!-- Change for Any Reason -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Change for Any Reason</h3>
           <div class="benefits">
 
@@ -623,7 +652,7 @@
         </div>
 
         <!-- Pricing -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Pricing</h3>
           <div class="pricing-bar" style="margin-bottom:0">
             <span class="label">Price:</span>
@@ -633,7 +662,7 @@
         </div>
 
         <!-- Rules -->
-        <div class="sub reveal" style="margin-top:2rem">
+        <div class="sub" style="margin-top:2rem">
           <h3>Rules &amp; Limitations</h3>
           <div class="cond-list">
             <ul>
@@ -645,7 +674,7 @@
         </div>
 
         <!-- Cancel for Any Reason -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Cancel for Any Reason</h3>
           <div class="overview">
             <p>If the customer holds a Cancel for Any Reason plan, they can cancel their flight <strong>for any reason</strong> prior to the first scheduled departure and receive either a refund or credit.</p>
@@ -681,18 +710,18 @@
       <!-- ═══════════════ PDA ═══════════════ -->
       <section class="product-section" id="pda">
 
-        <div class="section-head reveal">
+        <div class="section-head">
           <div class="icon-wrap lbp">&#9888;</div>
           <h2>Priority Disruption Assistance</h2>
           <span class="ver">Standalone</span>
         </div>
 
-        <div class="overview reveal">
+        <div class="overview">
           <p><strong>Priority Disruption Assistance (PDA)</strong> is an add-on service that allows customers to rebook an alternative flight if their flight is delayed by <strong>2+ hours</strong>, canceled, or if they miss a connecting flight due to a prior delay or cancellation. It provides a <strong>complimentary rebooking</strong> on the day of travel when the airline does not offer a reasonable alternative.</p>
         </div>
 
         <!-- Key Numbers -->
-        <div class="kv reveal">
+        <div class="kv">
           <div class="kv-item"><div class="num">2h+</div><div class="lbl">Delay Threshold</div></div>
           <div class="kv-item"><div class="num">7%</div><div class="lbl">of Ticket Price</div></div>
           <div class="kv-item"><div class="num">$28.95</div><div class="lbl">Minimum Price</div></div>
@@ -700,7 +729,7 @@
         </div>
 
         <!-- Eligibility -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Eligibility Conditions</h3>
           <div class="cond-list">
             <ul>
@@ -714,7 +743,7 @@
         </div>
 
         <!-- How It Works -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>How It Works <span class="count-badge">4 steps</span></h3>
           <div class="steps">
 
@@ -746,7 +775,7 @@
         </div>
 
         <!-- Pricing -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Pricing</h3>
           <div class="pricing-bar">
             <span class="label">Price:</span>
@@ -756,7 +785,7 @@
         </div>
 
         <!-- Important Note -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Important Notes</h3>
           <div class="cond-list">
             <ul>
@@ -772,18 +801,18 @@
       <!-- ═══════════════ DREAMPASS ═══════════════ -->
       <section class="product-section" id="dreampass">
 
-        <div class="section-head reveal">
+        <div class="section-head">
           <div class="icon-wrap lbp">&#9733;</div>
           <h2>DreamPass Membership</h2>
           <span class="ver">Silver &middot; Gold &middot; Platinum</span>
         </div>
 
-        <div class="overview reveal">
+        <div class="overview">
           <p><strong>DreamPass</strong> is Skylux Travel's premium membership program designed to boost loyalty and turn one-time buyers into repeat customers. With <strong>3 tiers</strong> — Silver, Gold, and Platinum — members earn cashback in <strong>Dream Coins</strong>, enjoy complimentary eSIM connectivity, exclusive deals, flight disruption compensation, and more. <strong>Only 30% of customers make 2+ purchases, yet they account for 52% of all bookings</strong> — DreamPass is built to grow that segment.</p>
         </div>
 
         <!-- Stats -->
-        <div class="kv reveal">
+        <div class="kv">
           <div class="kv-item"><div class="num">$51</div><div class="lbl">Avg Savings/Booking</div></div>
           <div class="kv-item"><div class="num">7.5%</div><div class="lbl">Max Cashback</div></div>
           <div class="kv-item"><div class="num">18</div><div class="lbl">Coins Valid (months)</div></div>
@@ -791,7 +820,7 @@
         </div>
 
         <!-- Plan Comparison -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Plan Comparison <span class="count-badge">3 tiers</span></h3>
           <div class="plans">
 
@@ -847,7 +876,7 @@
         </div>
 
         <!-- Cashback Deep Dive -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Cashback Program — Dream Coins</h3>
           <div class="benefits">
 
@@ -885,7 +914,7 @@
         </div>
 
         <!-- eSIM -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Complimentary eSIM <span class="count-badge">140+ countries</span></h3>
           <div class="overview">
             <p>Every DreamPass member gets a <strong>complimentary global eSIM</strong> for seamless connectivity while traveling. No physical SIM needed — instant activation via the DreamPass app. Valid in <strong>140+ countries</strong>. To check supported countries, visit <strong>dreampass.app/SM-countries</strong>.</p>
@@ -915,7 +944,7 @@
 
           </div>
 
-          <div class="cond-list reveal" style="margin-top:1rem">
+          <div class="cond-list" style="margin-top:1rem">
             <h4 style="font-size:.9rem;font-weight:600;margin-bottom:.5rem">Activation Steps</h4>
             <ul>
               <li><span class="arr">&#9656;</span> Activate DreamPass subscription &rarr; receive welcome email</li>
@@ -929,7 +958,7 @@
         </div>
 
         <!-- Member Deals -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Member-Only Deals</h3>
           <div class="benefits">
 
@@ -952,7 +981,7 @@
         </div>
 
         <!-- Disrupted Flight Compensation -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Disrupted Flight Compensation</h3>
           <div class="overview">
             <p>DreamPass members can receive up to <strong>&euro;600</strong> if their flight is delayed or canceled. The customer is <strong>automatically notified by email</strong> when their flight is eligible — no need to track it manually.</p>
@@ -988,7 +1017,7 @@
         </div>
 
         <!-- Additional Benefits -->
-        <div class="sub reveal">
+        <div class="sub">
           <h3>Additional Benefits</h3>
           <div class="benefits">
 
@@ -1023,6 +1052,7 @@
     </div>
   </div>
 
+  <!-- Footer -->
   <footer class="footer">
     <p>Skylux Travel Wiki &mdash; For internal agent use only.</p>
     <div class="links">
@@ -1057,40 +1087,50 @@
   <button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">&#8593;</button>
 
   <script>
-    // ── Feedback Modal ──
-    const fbBtn=document.getElementById('feedbackBtn');
-    const fbModal=document.getElementById('feedbackModal');
-    const closeBtn=document.getElementById('closeModal');
-    const fbForm=document.getElementById('feedbackForm');
-    const successMsg=document.getElementById('successMsg');
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
 
-    fbBtn.addEventListener('click',e=>{e.preventDefault();fbModal.classList.add('open')});
-    closeBtn.addEventListener('click',()=>{fbModal.classList.remove('open')});
-    fbModal.addEventListener('click',e=>{if(e.target===fbModal)fbModal.classList.remove('open')});
+    // Mobile nav
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    const closeNav = document.getElementById('closeNav');
+    hamburgerBtn.addEventListener('click', () => mobileNav.classList.add('open'));
+    closeNav.addEventListener('click', () => mobileNav.classList.remove('open'));
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileNav.classList.remove('open')));
 
-    fbForm.addEventListener('submit',async e=>{
+    // Feedback Modal
+    const fbBtn = document.getElementById('feedbackBtn');
+    const fbModal = document.getElementById('feedbackModal');
+    const closeBtn = document.getElementById('closeModal');
+    const fbForm = document.getElementById('feedbackForm');
+    const successMsg = document.getElementById('successMsg');
+
+    fbBtn.addEventListener('click', e => { e.preventDefault(); fbModal.classList.add('open'); });
+    closeBtn.addEventListener('click', () => { fbModal.classList.remove('open'); });
+    fbModal.addEventListener('click', e => { if (e.target === fbModal) fbModal.classList.remove('open'); });
+
+    fbForm.addEventListener('submit', async e => {
       e.preventDefault();
-      const fd=new FormData(fbForm);
-      try{
-        const r=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd,headers:{'Accept':'application/json'}});
-        const d=await r.json();
-        if(d.success){fbForm.style.display='none';successMsg.style.display='block'}
+      const fd = new FormData(fbForm);
+      try {
+        const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
+        const d = await r.json();
+        if (d.success) { fbForm.style.display = 'none'; successMsg.style.display = 'block'; }
         else alert('Something went wrong. Please try again.');
-      }catch{alert('Network error. Please try again.');}
+      } catch { alert('Network error. Please try again.'); }
     });
 
     // Back to top
-    window.addEventListener('scroll',()=>{document.getElementById('btt').classList.toggle('visible',window.scrollY>400)});
-
-    // Scroll reveal
-    const ro=new IntersectionObserver(e=>{e.forEach(i=>{if(i.isIntersecting)i.target.classList.add('visible')})},{threshold:.08});
-    document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+    window.addEventListener('scroll', () => { document.getElementById('btt').classList.toggle('visible', window.scrollY > 400); });
 
     // Side nav active link
-    const sections=document.querySelectorAll('.product-section');
-    const links=document.querySelectorAll('.side-nav a:not(.coming)');
-    const so=new IntersectionObserver(e=>{e.forEach(i=>{if(i.isIntersecting){links.forEach(l=>l.classList.remove('active-link'));const m=document.querySelector(`.side-nav a[href="#${i.target.id}"]`);if(m)m.classList.add('active-link')}})},{rootMargin:'-100px 0px -60% 0px'});
-    sections.forEach(s=>so.observe(s));
+    const sections = document.querySelectorAll('.product-section');
+    const links = document.querySelectorAll('.side-nav a:not(.coming)');
+    const so = new IntersectionObserver(e => { e.forEach(i => { if (i.isIntersecting) { links.forEach(l => l.classList.remove('active-link')); const m = document.querySelector(`.side-nav a[href="#${i.target.id}"]`); if (m) m.classList.add('active-link'); } }) }, { rootMargin: '-100px 0px -60% 0px' });
+    sections.forEach(s => so.observe(s));
   </script>
 
 </body>
